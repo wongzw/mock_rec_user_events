@@ -23,7 +23,7 @@ def get_schema_from_file(uploaded_file):
 
 @st.cache_data
 def load_translations():
-    with open('/Users/bytedance/Documents/0sample/translations.json', 'r', encoding='utf-8') as f:
+    with open('./translations.json', 'r', encoding='utf-8') as f:
         return json.load(f)
 
 TRANSLATIONS = load_translations()
