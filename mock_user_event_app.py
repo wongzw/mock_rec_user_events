@@ -38,7 +38,7 @@ def get_default_flows(industry='E-commerce'):
     if industry == 'E-commerce':
         flows = [
             {
-                'name': get_translation('flow_name:Browser/Window Shopper'),
+                'name': get_translation('flow_name_Browser/Window Shopper'),
                 'flow': [
                     {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.7},
@@ -48,7 +48,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.4
             },
             {
-                'name': get_translation('flow_name:Social Shopper'),
+                'name': get_translation('flow_name_Social Shopper'),
                 'flow': [
                     {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -59,7 +59,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.3
             },
             {
-                'name': get_translation('flow_name:Purchaser'),
+                'name': get_translation('flow_name_Purchaser'),
                 'flow': [
                     {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.9},
@@ -73,7 +73,7 @@ def get_default_flows(industry='E-commerce'):
     elif industry == 'Stock Image Platform':
         flows = [
             {
-                'name': get_translation('flow_name:Free User'),
+                'name': get_translation('flow_name_Free User'),
                 'flow': [
                     {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Search Images', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -83,7 +83,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.6
             },
             {
-                'name': get_translation('flow_name:Subscriber'),
+                'name': get_translation('flow_name_Subscriber'),
                 'flow': [
                     {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Search Images', 'likelihood_of_progressing_to_next_step': 0.9},
@@ -98,7 +98,7 @@ def get_default_flows(industry='E-commerce'):
     elif industry == 'Video Platform':
         flows = [
             {
-                'name': get_translation('flow_name:Casual Viewer'),
+                'name': get_translation('flow_name_Casual Viewer'),
                 'flow': [
                     {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Video', 'likelihood_of_progressing_to_next_step': 0.5},
@@ -108,7 +108,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.7
             },
             {
-                'name': get_translation('flow_name:Power User'),
+                'name': get_translation('flow_name_Power User'),
                 'flow': [
                     {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Video', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -124,7 +124,7 @@ def get_default_flows(industry='E-commerce'):
     elif industry == 'Social Networking':
         flows = [
             {
-                'name': get_translation('flow_name:Lurker'),
+                'name': get_translation('flow_name_Lurker'),
                 'flow': [
                     {'event': 'View Post', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Post', 'likelihood_of_progressing_to_next_step': 0.3},
@@ -133,7 +133,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.5
             },
             {
-                'name': get_translation('flow_name:Engaged User'),
+                'name': get_translation('flow_name_Engaged User'),
                 'flow': [
                     {'event': 'View Post', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Post', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -175,7 +175,7 @@ def step2_configure_flows():
     st.info(get_translation("step2_info"))
 
     industries = ['E-commerce', 'Stock Image Platform', 'Video Platform', 'Social Networking']
-    translated_industries = [get_translation(f"industry_name:{i}") for i in industries]
+    translated_industries = [get_translation(f"industry_name_{i}") for i in industries]
     selected_translated_industry = st.selectbox(get_translation("industry_select_label"), translated_industries)
     selected_industry = industries[translated_industries.index(selected_translated_industry)]
 
