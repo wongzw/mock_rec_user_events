@@ -23,7 +23,7 @@ def get_schema_from_file(uploaded_file):
 
 @st.cache_data
 def load_translations():
-    with open('./translations.json', 'r', encoding='utf-8') as f:
+    with open('/Users/bytedance/Documents/0sample/translations.json', 'r', encoding='utf-8') as f:
         return json.load(f)
 
 TRANSLATIONS = load_translations()
@@ -52,7 +52,7 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': 'Browser/Window Shopper',
                 'flow': [
-                    {'event': 'Product View (Impression)', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.7},
                     {'event': 'Add to Wishlist', 'likelihood_of_progressing_to_next_step': 0.4},
                     {'event': 'Share Product', 'likelihood_of_progressing_to_next_step': 0.2}
@@ -62,7 +62,7 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': 'Social Shopper',
                 'flow': [
-                    {'event': 'Product View (Impression)', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.8},
                     {'event': 'Like Product', 'likelihood_of_progressing_to_next_step': 0.6},
                     {'event': 'Share Product', 'likelihood_of_progressing_to_next_step': 0.5},
@@ -73,7 +73,7 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': 'Purchaser',
                 'flow': [
-                    {'event': 'Product View (Impression)', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.9},
                     {'event': 'Add to Cart', 'likelihood_of_progressing_to_next_step': 0.4},
                     {'event': 'Initiate Checkout', 'likelihood_of_progressing_to_next_step': 0.6},
@@ -213,7 +213,7 @@ def step2_configure_flows():
             # Journey Header
             header_cols = st.columns([0.8, 0.2])
             with header_cols[0]:
-                st.text_input(get_translation("journey_name_label"), value=flow['name'], key=f"flow_name_{flow['id']}")
+                st.text_input(get_translation("journey_name_label"), value=flow['name'], key=f"flow_name_{flow['id']}", label_visibility="collapsed")
             with header_cols[1]:
                 if st.button(get_translation("delete_journey_button"), key=f"delete_flow_{flow['id']}", use_container_width=True):
                     st.session_state.user_.pop(i)
@@ -382,6 +382,21 @@ def step3_generate_events():
                 st.success(get_translation("generation_success").format(event_count=len(st.session_state.generated_events)))
 
     if st.session_state.generated_events:
+        # --- Download and Restart Buttons ---
+        button_cols = st.columns([0.5, 0.5])
+        with button_cols[0]:
+            if st.button(get_translation("restart_button")):
+                st.session_state.clear()
+                initialize_session_state()
+                st.rerun()
+        with button_cols[1]:
+            jsonl_data = "\n".join([json.dumps(event) for event in st.session_state.generated_events])
+            st.download_button(
+                label=get_translation("download_jsonl_button"),
+                data=jsonl_data,
+                file_name=f"user_events_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jsonl",
+                mime="application/jsonl",
+            )
         st.subheader(get_translation("analysis_header"))
         
         # Create a pandas DataFrame from the generated events
@@ -406,10 +421,7 @@ def step3_generate_events():
         events_over_time = df.set_index('event_timestamp').resample('h')['event_type'].count()
         st.line_chart(events_over_time)
 
-        if st.button(get_translation("restart_button")):
-            st.session_state.clear()
-            initialize_session_state()
-            st.rerun()
+        
 
 def generate_events(flows, num_users, flows_per_user, start_datetime, end_datetime, product_ids):
     events = []
