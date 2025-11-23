@@ -1,4 +1,5 @@
 import streamlit as st
+from translation import get_translation
 import pandas as pd
 import json
 import xml.etree.ElementTree as ET
@@ -20,9 +21,9 @@ def convert_to_jsonl(data, file_type):
         return "\n".join([json.dumps(record, ensure_ascii=False) for record in data])
 
 def run():
-    st.title("File to JSONL Converter")
+    st.title(get_translation("jsonl_converter_title"))
 
-    uploaded_file = st.file_uploader("Upload a CSV, JSON, TXT, Excel, XML, TSV, YAML or Parquet file", type=["csv", "json", "txt", "xlsx", "xml", "tsv", "yml", "yaml", "parquet"])
+    uploaded_file = st.file_uploader(get_translation("upload_file"), type=["csv", "json", "txt", "xlsx", "xml", "tsv", "yml", "yaml", "parquet"])
 
     if uploaded_file is not None:
         file_extension = uploaded_file.name.split(".")[-1]
@@ -54,7 +55,7 @@ def run():
             jsonl_data = convert_to_jsonl(df, "parquet")
             
         st.download_button(
-            label="Download JSONL",
+            label=get_translation("download_jsonl_button"),
             data=jsonl_data,
             file_name=f"{uploaded_file.name.split('.')[0]}.jsonl",
             mime="application/jsonl",

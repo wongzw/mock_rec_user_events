@@ -1,15 +1,17 @@
 import streamlit as st
+from translation import get_translation
+
 
 import zipfile
 import io
 
 def run():
-    st.title("JSONL File Splitter")
+    st.title(get_translation("jsonl_splitter_title"))
 
-    uploaded_file = st.file_uploader("Upload a JSONL file", type="jsonl")
-    lines_per_file = st.number_input("Number of lines per file", min_value=1, value=1000)
+    uploaded_file = st.file_uploader(get_translation("upload_jsonl"), type="jsonl")
+    lines_per_file = st.number_input(get_translation("lines_per_file"), min_value=1, value=1000)
 
-    if st.button("Split File"):
+    if st.button(get_translation("split_file_button")):
         if uploaded_file is not None:
             try:
                 file_name = uploaded_file.name
@@ -27,11 +29,11 @@ def run():
                 
                 zip_buffer.seek(0)
                 st.download_button(
-                    label="Download Split Files",
+                    label=get_translation("download_split_files"),
                     data=zip_buffer,
                     file_name=f"{base_name}_split.zip",
                     mime="application/zip"
                 )
-                st.success("File split and zipped successfully!")
+                st.success(get_translation("split_success_message"))
             except Exception as e:
-                st.error(f"An error occurred: {e}")
+                st.error(get_translation("error_message").format(e=e))

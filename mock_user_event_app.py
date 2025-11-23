@@ -8,19 +8,6 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
-def get_schema_from_file(uploaded_file):
-    if not uploaded_file:
-        return []
-    uploaded_file.seek(0)
-    first_line = uploaded_file.readline()
-    uploaded_file.seek(0)
-    try:
-        return list(json.loads(first_line).keys())
-    except (json.JSONDecodeError, AttributeError):
-        return []
-
-
-
 @st.cache_data
 def load_translations():
     with open('./translations.json', 'r', encoding='utf-8') as f:
@@ -31,6 +18,17 @@ TRANSLATIONS = load_translations()
 def get_translation(key):
     lang = st.session_state.get('language', 'en')
     return TRANSLATIONS.get(lang, {}).get(key, key)
+
+def get_schema_from_file(uploaded_file):
+    if not uploaded_file:
+        return []
+    uploaded_file.seek(0)
+    first_line = uploaded_file.readline()
+    uploaded_file.seek(0)
+    try:
+        return list(json.loads(first_line).keys())
+    except (json.JSONDecodeError, AttributeError):
+        return []
 
 def initialize_session_state():
     if 'current_step' not in st.session_state:
@@ -168,16 +166,6 @@ def get_default_flows(industry='E-commerce'):
     return flows
 
 def step1_upload():
-    lang = st.session_state.get('language', 'en')
-    st.session_state.language = st.radio(
-        get_translation("language"), 
-        options=list(TRANSLATIONS.keys()), 
-        format_func=lambda x: "English" if x == 'en' else "中文",
-        horizontal=True,
-        index=0 if lang == 'en' else 1,
-        on_change=lambda: st.session_state.__setitem__('language', st.session_state.language)
-    )
-
     st.header(get_translation("step1_header"))
     st.markdown(get_translation("step1_subheader"))
 
