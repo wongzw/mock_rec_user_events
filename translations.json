@@ -1,6 +1,6 @@
 {
     "en": {
-        "sidebar_title": "Tools",
+        "sidebar_title": "AI Search Tools",
         "go_to": "Go to",
         "language": "Language",
         "Event Generation": "Event Generation",
@@ -148,7 +148,7 @@
         "fail_zero_users_with_non_exposure_events": "Fail: 0 users with more than just exposure events."
     },
     "zh": {
-        "sidebar_title": "工具",
+        "sidebar_title": "AI搜索工具百宝箱",
         "go_to": "切换",
         "language": "语言",
         "Event Generation": "事件生成",
