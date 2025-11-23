@@ -453,7 +453,7 @@ def generate_events(flows, num_users, flows_per_user, start_datetime, end_dateti
                     break  # User drops off
     return events, user_journeys
 
-def main():
+def run():
     initialize_session_state()
 
     if st.session_state.current_step == 1:
@@ -462,6 +462,3 @@ def main():
         step2_configure_flows()
     elif st.session_state.current_step == 3:
         step3_generate_events()
-
-if __name__ == "__main__":
-    main()
