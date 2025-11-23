@@ -208,7 +208,7 @@ def step2_configure_flows():
             for j, step in enumerate(flow['flow']):
                 step_cols = st.columns([0.6, 0.3, 0.1])
                 with step_cols[0]:
-                    all_events = [event for key, event in get_translation[st.session_state.language].items() if key.startswith("event_name:")]
+                    all_events = [event for key, event in get_translation(st.session_state.language).items() if key.startswith("event_name:")]
                     try:
                         event_index = all_events.index(get_translation(f"event_name:{step['event']}"))
                     except ValueError:
