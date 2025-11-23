@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 
-@st.cache_data(TTL= 300)
+@st.cache_data(ttl= 300)
 def load_translations():
     with open('./translations.json', 'r', encoding='utf-8') as f:
         return json.load(f)
