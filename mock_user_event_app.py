@@ -2,22 +2,12 @@ import streamlit as st
 import json
 import random
 from datetime import datetime, date, timedelta
-
+from translation import get_translation
 
 import pandas as pd
 
 st.set_page_config(layout="wide")
 
-@st.cache_data
-def load_translations():
-    with open('./translations.json', 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-TRANSLATIONS = load_translations()
-
-def get_translation(key):
-    lang = st.session_state.get('language', 'en')
-    return TRANSLATIONS.get(lang, {}).get(key, key)
 
 def get_schema_from_file(uploaded_file):
     if not uploaded_file:
@@ -218,7 +208,7 @@ def step2_configure_flows():
             for j, step in enumerate(flow['flow']):
                 step_cols = st.columns([0.6, 0.3, 0.1])
                 with step_cols[0]:
-                    all_events = [event for key, event in TRANSLATIONS[st.session_state.language].items() if key.startswith("event_name:")]
+                    all_events = [event for key, event in get_translation[st.session_state.language].items() if key.startswith("event_name:")]
                     try:
                         event_index = all_events.index(get_translation(f"event_name:{step['event']}"))
                     except ValueError:
@@ -230,7 +220,7 @@ def step2_configure_flows():
                         key=f"event_type_{flow['id']}_{step['id']}"
                     )
                     # Find the original English event name
-                    for key, value in TRANSLATIONS[st.session_state.language].items():
+                    for key, value in get_translation[st.session_state.language].items():
                         if value == selected_event_display:
                             step['event'] = key.replace("event_name:", "")
                             break

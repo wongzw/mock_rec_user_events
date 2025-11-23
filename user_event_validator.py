@@ -3,23 +3,14 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
+from translation import get_translation
 
-@st.cache_data
-def load_translations():
-    with open('./translations.json', 'r', encoding='utf-8') as f:
-        return json.load(f)
+# Add Chinese font fallback
+plt.rcParams['font.sans-serif'] = ['SimHei', 'Heiti TC', 'Microsoft JhengHei', 'PMingLiU', 'sans-serif']
 
-TRANSLATIONS = load_translations()
-
-def get_translation(key):
-    lang = st.session_state.get('language', 'en')
-    return TRANSLATIONS.get(lang, {}).get(key, key)
 
 def run():
-    plt.rcParams['font.family'] = ['Heiti TC']
     st.title(get_translation("user_event_validation_title"))
-
-
 
     uploaded_file = st.file_uploader(get_translation("choose_jsonl"), type="jsonl")
 
