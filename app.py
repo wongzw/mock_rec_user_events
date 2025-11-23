@@ -209,7 +209,7 @@ def step2_configure_flows():
     # --- Flow Configuration ---
     for i, flow in enumerate(st.session_state.user_flows):
         # Make each journey collapsible
-        with st.expander(f"{get_translation(f'flow_name:{flow['name']}')} ({flow['weight']:.0%})", expanded=st.session_state.get(f"flow_expanded_{flow['id']}", True)):
+        with st.expander(f"{get_translation(f'{flow['name']}')} ({flow['weight']:.0%})", expanded=st.session_state.get(f"flow_expanded_{flow['id']}", True)):
             # Journey Header
             header_cols = st.columns([0.8, 0.2])
             with header_cols[0]:
