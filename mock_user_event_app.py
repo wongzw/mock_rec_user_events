@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import random
 from datetime import datetime, date, timedelta
-from translation import get_translation
+from translation import get_translation, TRANSLATIONS
 
 import pandas as pd
 
@@ -38,7 +38,7 @@ def get_default_flows(industry='E-commerce'):
     if industry == 'E-commerce':
         flows = [
             {
-                'name': 'Browser/Window Shopper',
+                'name': get_translation('flow_name:Browser/Window Shopper'),
                 'flow': [
                     {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.7},
@@ -48,7 +48,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.4
             },
             {
-                'name': 'Social Shopper',
+                'name': get_translation('flow_name:Social Shopper'),
                 'flow': [
                     {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -59,7 +59,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.3
             },
             {
-                'name': 'Purchaser',
+                'name': get_translation('flow_name:Purchaser'),
                 'flow': [
                     {'event': 'Product View', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Product Click', 'likelihood_of_progressing_to_next_step': 0.9},
@@ -73,7 +73,7 @@ def get_default_flows(industry='E-commerce'):
     elif industry == 'Stock Image Platform':
         flows = [
             {
-                'name': 'Free User',
+                'name': get_translation('flow_name:Free User'),
                 'flow': [
                     {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Search Images', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -83,7 +83,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.6
             },
             {
-                'name': 'Subscriber',
+                'name': get_translation('flow_name:Subscriber'),
                 'flow': [
                     {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Search Images', 'likelihood_of_progressing_to_next_step': 0.9},
@@ -98,7 +98,7 @@ def get_default_flows(industry='E-commerce'):
     elif industry == 'Video Platform':
         flows = [
             {
-                'name': 'Casual Viewer',
+                'name': get_translation('flow_name:Casual Viewer'),
                 'flow': [
                     {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Video', 'likelihood_of_progressing_to_next_step': 0.5},
@@ -108,7 +108,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.7
             },
             {
-                'name': 'Power User',
+                'name': get_translation('flow_name:Power User'),
                 'flow': [
                     {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Video', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -124,7 +124,7 @@ def get_default_flows(industry='E-commerce'):
     elif industry == 'Social Networking':
         flows = [
             {
-                'name': 'Lurker',
+                'name': get_translation('flow_name:Lurker'),
                 'flow': [
                     {'event': 'View Post', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Post', 'likelihood_of_progressing_to_next_step': 0.3},
@@ -133,7 +133,7 @@ def get_default_flows(industry='E-commerce'):
                 'weight': 0.5
             },
             {
-                'name': 'Engaged User',
+                'name': get_translation('flow_name:Engaged User'),
                 'flow': [
                     {'event': 'View Post', 'likelihood_of_progressing_to_next_step': 1.0},
                     {'event': 'Like Post', 'likelihood_of_progressing_to_next_step': 0.8},
@@ -175,7 +175,9 @@ def step2_configure_flows():
     st.info(get_translation("step2_info"))
 
     industries = ['E-commerce', 'Stock Image Platform', 'Video Platform', 'Social Networking']
-    selected_industry = st.selectbox(get_translation("industry_select_label"), industries, key='industry_select')
+    translated_industries = [get_translation(f"industry_name:{i}") for i in industries]
+    selected_translated_industry = st.selectbox(get_translation("industry_select_label"), translated_industries)
+    selected_industry = industries[translated_industries.index(selected_translated_industry)]
 
     if st.session_state.get('selected_industry') != selected_industry:
         st.session_state.selected_industry = selected_industry
@@ -208,7 +210,7 @@ def step2_configure_flows():
             for j, step in enumerate(flow['flow']):
                 step_cols = st.columns([0.6, 0.3, 0.1])
                 with step_cols[0]:
-                    all_events = [event for key, event in get_translation(st.session_state.language).items() if key.startswith("event_name:")]
+                    all_events = [event for key, event in TRANSLATIONS.get(st.session_state.get('language', 'en'), {}).items() if key.startswith("event_name:")]
                     try:
                         event_index = all_events.index(get_translation(f"event_name:{step['event']}"))
                     except ValueError:
@@ -219,12 +221,11 @@ def step2_configure_flows():
                         index=event_index,
                         key=f"event_type_{flow['id']}_{step['id']}"
                     )
-                    # Find the original English event name
-                    for key, value in get_translation[st.session_state.language].items():
-                        if value == selected_event_display:
+                    # Find the original English event name from the display name
+                    for key, value in TRANSLATIONS.get(st.session_state.get('language', 'en'), {}).items():
+                        if value == selected_event_display and key.startswith("event_name:"):
                             step['event'] = key.replace("event_name:", "")
                             break
-                    step['event'] = selected_event_display
                 with step_cols[1]:
                     step['likelihood_of_progressing_to_next_step'] = st.slider(
                         get_translation("step_likelihood_label"), 0.0, 1.0,
@@ -253,7 +254,7 @@ def step2_configure_flows():
     with footer_cols[0]:
         if st.button(get_translation("add_flow_button"), use_container_width=True):
             new_flow = {
-                'name': f'New Flow {len(st.session_state.user_flows) + 1}',
+                'name': get_translation('new_flow_name').format(flow_number=len(st.session_state.user_flows) + 1),
                 'flow': [{'event': 'new_event', 'likelihood_of_progressing_to_next_step': 1.0, 'id': random.randint(1, 1000000)}],
                 'weight': 0.0,
                 'id': random.randint(1, 1000000)
@@ -385,7 +386,7 @@ def step3_generate_events():
 
         st.subheader(get_translation("user_journey_analysis_header"))
         user_journey_counts = pd.Series(st.session_state.user_journeys).value_counts()
-        user_journey_counts.index = [get_translation(f'flow_name:{name}') for name in user_journey_counts.index]
+        user_journey_counts.index = [get_translation(f'flow_name:{name}') if f'flow_name:{name}' in TRANSLATIONS.get(st.session_state.get('language', 'en'), {}) else name for name in user_journey_counts.index]
         st.bar_chart(user_journey_counts)
 
         # --- Event Counts Chart ---
