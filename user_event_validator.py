@@ -88,14 +88,6 @@ def run():
             else:
                 validation_results[get_translation("high_heat_recall")] = get_translation("fail_high_heat_recall")
 
-            st.subheader(get_translation("validation_results"))
-
-            for key, value in validation_results.items():
-                if get_translation("pass") in value:
-                    st.success(f"{key}: {value}")
-                else:
-                    st.error(f"{key}: {value.replace(get_translation('fail'), '')}")
-
             # 2. Number of users
             st.subheader(get_translation("user_counts"))
             num_users = df[user_id_field].nunique()
@@ -113,7 +105,13 @@ def run():
             col2.metric(get_translation("users_with_only_exposure_events"), num_users_only_exposure)
             col3.metric(get_translation("users_with_more_than_just_exposure_events"), num_users_with_other_events)
 
+            st.subheader(get_translation("validation_results"))
 
+            for key, value in validation_results.items():
+                if get_translation("pass") in value:
+                    st.success(f"{key}: {value}")
+                else:
+                    st.error(f"{key}: {value.replace(get_translation('fail'), '')}")
 
             # 5. Distribution of users in each event type
             st.subheader(get_translation("event_type_distribution"))
