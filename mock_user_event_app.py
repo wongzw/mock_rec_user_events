@@ -425,7 +425,8 @@ def generate_events(flows, num_users, flows_per_user, start_datetime, end_dateti
                         "user_id": str(user_id),
                         "event_type": step['event'],
                         "event_timestamp": random.randint(start_timestamp, end_timestamp),
-                        "product_id": random.choice(product_ids)
+                        "item_id": random.choice(product_ids),
+                        "event_scene": "homepage",
                     }
                     events.append(event)
                 else:
