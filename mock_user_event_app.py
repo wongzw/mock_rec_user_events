@@ -75,9 +75,9 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': get_translation('flow_name_Free User'),
                 'flow': [
-                    {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 1.0},
-                    {'event': 'Search Images', 'likelihood_of_progressing_to_next_step': 0.8},
-                    {'event': 'Download Watermarked Preview', 'likelihood_of_progressing_to_next_step': 0.5},
+                    {'event': 'Image Exposure', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 0.8},
+                    {'event': 'Download Image', 'likelihood_of_progressing_to_next_step': 0.5},
                     {'event': 'Create Free Account', 'likelihood_of_progressing_to_next_step': 0.15}
                 ],
                 'weight': 0.6
@@ -85,11 +85,10 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': get_translation('flow_name_Subscriber'),
                 'flow': [
-                    {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 1.0},
-                    {'event': 'Search Images', 'likelihood_of_progressing_to_next_step': 0.9},
-                    {'event': 'Download High-Resolution Image', 'likelihood_of_progressing_to_next_step': 0.7},
+                    {'event': 'Image Exposure', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'View Image', 'likelihood_of_progressing_to_next_step': 0.9},
                     {'event': 'Add to Collection', 'likelihood_of_progressing_to_next_step': 0.4},
-                    {'event': 'License Extended Usage', 'likelihood_of_progressing_to_next_step': 0.25},
+                    {'event': 'Purchase Image', 'likelihood_of_progressing_to_next_step': 0.25},
                     {'event': 'Share Collection', 'likelihood_of_progressing_to_next_step': 0.15}
                 ],
                 'weight': 0.4
@@ -100,7 +99,8 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': get_translation('flow_name_Casual Viewer'),
                 'flow': [
-                    {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Video Exposure', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 0.6},
                     {'event': 'Like Video', 'likelihood_of_progressing_to_next_step': 0.5},
                     {'event': 'Subscribe to Channel', 'likelihood_of_progressing_to_next_step': 0.2},
                     {'event': 'Save to Watch Later', 'likelihood_of_progressing_to_next_step': 0.3}
@@ -110,7 +110,8 @@ def get_default_flows(industry='E-commerce'):
             {
                 'name': get_translation('flow_name_Power User'),
                 'flow': [
-                    {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Video Exposure', 'likelihood_of_progressing_to_next_step': 1.0},
+                    {'event': 'Watch Video', 'likelihood_of_progressing_to_next_step': 0.5},
                     {'event': 'Like Video', 'likelihood_of_progressing_to_next_step': 0.8},
                     {'event': 'Comment on Video', 'likelihood_of_progressing_to_next_step': 0.6},
                     {'event': 'Share Video', 'likelihood_of_progressing_to_next_step': 0.4},
