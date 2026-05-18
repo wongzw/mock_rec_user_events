@@ -197,7 +197,7 @@ def step2_configure_flows():
                 st.text_input(get_translation("journey_name_label"), value=flow['name'], key=f"flow_name_{flow['id']}", label_visibility="collapsed")
             with header_cols[1]:
                 if st.button(get_translation("delete_journey_button"), key=f"delete_flow_{flow['id']}", use_container_width=True):
-                    st.session_state.user_.pop(i)
+                    st.session_state.user_flows.pop(i)
                     st.rerun()
 
             # Journey Weight
